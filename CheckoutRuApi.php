@@ -102,6 +102,7 @@ class CheckoutRuApi
         if (count($params)>0 && is_array($params))
             curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
         $curlData=curl_exec($curl);
+        echo '<h3>Curl</h3><pre>'; var_dump(curl_getinfo($curl)); echo "</pre><pre>"; var_dump(curl_error($curl)); echo '</pre>'; 
         curl_close($curl);
         return(json_decode($curlData,true));
     }
