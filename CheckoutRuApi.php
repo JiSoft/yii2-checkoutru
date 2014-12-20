@@ -77,8 +77,7 @@ namespace jisoft\checkoutru;
       curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
       $curlData=curl_exec($curl);
       curl_close($curl);
-      $responce=json_decode($curlData,true);
-      return $response;
+      return(json_decode($curlData,true));
     }
     
  }
