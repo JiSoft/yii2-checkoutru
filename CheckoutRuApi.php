@@ -24,6 +24,9 @@ namespace jisoft\checkoutru;
     
     public function getTicket()
     {
+      if ($this->ticket != false)
+       return $this->ticket;
+       
       $url = $this->baseUrl.'/service/login/ticket/'.$this->apiKey;
       
       $response = $this->send($url);
@@ -33,6 +36,21 @@ namespace jisoft\checkoutru;
       } else {
         return false;
       }
+    }
+    
+    public function setTicket($ticket)
+    {
+      $this->ticket = $ticket;
+    }
+    
+    public function getBaseUrl()
+    {
+     return $this->baseUrl;
+    }
+    
+    public function setBaseUrl($baseUrl)
+    {
+      $this->baseUrl = $baseUrl;
     }
     
     public function getPlacesByQuery($text)
