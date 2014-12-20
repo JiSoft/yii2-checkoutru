@@ -99,8 +99,14 @@ class CheckoutRuApi
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
         if ($method=='post')
             curl_setopt($curl, CURLOPT_POST, true);
-        if (count($params)>0 && is_array($params))
-            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($params));
+        if (count($params)>0 && is_array($params)) {
+            $datajson = json_encode($params);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $datajson);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, [                                                                        
+                'Content-Type: application/json',                                                                                
+                'Content-Length: ' . strlen($datajson)                                                                     
+            ]);    
+        }    
         $curlData=curl_exec($curl);
         echo '<h3>Curl</h3><pre>'; var_dump(curl_getinfo($curl)); echo "</pre><pre>"; var_dump(curl_error($curl)); echo '</pre>'; 
         curl_close($curl);
