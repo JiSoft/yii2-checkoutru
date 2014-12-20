@@ -7,7 +7,7 @@ namespace jisoft\checkoutru;
  */
 class CheckoutRuApi
 {
-    protected $apiKey;
+    protected $apiKey = false;
     protected $ticket = false;
     protected $baseUrl = 'http://platform.checkout.ru';
 
@@ -16,8 +16,6 @@ class CheckoutRuApi
         $this->apiKey = $apiKey;
         if (!empty($ticket))
             $this->ticket = $ticket;
-        else
-            $this->getTicket();
         if (!empty($baseUrl))
             $this->baseUrl = $baseUrl;
     }
@@ -87,8 +85,13 @@ class CheckoutRuApi
 
     protected function send($url,$method='get',$params=[])
     {
-        if (empty($this->ticket) && substr_count($url,'/service/login/ticket/')==0)
+        if ($method=='get' && empty($this->ticket) && substr_count($url,'/service/login/ticket/')==0)
             return false;
+        if ($method=='post' && empty($this->apiKey))
+            return false;
+        if ($method=='post' && !isset($params['apiKey']))
+            $params['apiKey'] = $this->apiKey;
+            
         $curl=curl_init();
         curl_setopt($curl,CURLOPT_URL,$url);
         curl_setopt($curl,CURLOPT_VERBOSE,0);
