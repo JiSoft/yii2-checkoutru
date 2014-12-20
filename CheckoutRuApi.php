@@ -41,9 +41,8 @@ namespace jisoft\checkoutru;
      
       $response = $this->send($url);
       
-      if (isset($response['ticket']) && !empty($response['ticket']) {
-        $this->token = $response['ticket'];
-        return $response['ticket'];
+      if (isset($response['suggestions']) && !empty($response['suggestions'])) {
+        return $response['suggestions'];
       } else {
         return false;
       }
