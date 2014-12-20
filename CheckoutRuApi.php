@@ -1,4 +1,6 @@
 <?php
+namespace jisoft\checkoutru;
+
 /**
  * Checkout.ru API
  * @author JiSoft <jisoft.dn@gmail.com>
