@@ -68,7 +68,7 @@ namespace jisoft\checkoutru;
     
     protected function send($url,$method='get',$params=[])
     {
-      if (empty($this->ticket))
+      if (empty($this->ticket) && substr_count($url,'/service/login/ticket/')==0)
         return false;
       $curl=curl_init();
       curl_setopt($curl,CURLOPT_URL,$url);
