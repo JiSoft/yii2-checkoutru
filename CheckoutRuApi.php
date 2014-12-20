@@ -27,7 +27,7 @@ namespace jisoft\checkoutru;
       $url = $this->baseUrl.'/service/login/ticket/'.$this->apiKey;
       
       $response = $this->send($url);
-      if (isset($response['ticket']) && !empty($response['ticket']) {
+      if (isset($response['ticket']) && !empty($response['ticket'])) {
         $this->ticket = $response['ticket'];
         return $response['ticket'];
       } else {
