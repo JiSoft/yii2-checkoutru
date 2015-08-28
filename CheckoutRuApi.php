@@ -75,11 +75,11 @@ class CheckoutRuApi
 
         $response = $this->send($url,'post',$data);
 
-//        if (isset($response['order']) && !empty($response['order'])) {
-//            return $response;
-//        } else {
-//            return false;
-//        }
+        if (isset($response['order']) && !empty($response['order'])) {
+            return $response;
+        } else {
+            return false;
+        }
         return $response;
     }
 
@@ -87,28 +87,28 @@ class CheckoutRuApi
     {
         if ($method=='get' && empty($this->ticket) && substr_count($url,'/service/login/ticket/')==0)
             return false;
-        if ($method=='post' && empty($this->apiKey))
-            return false;
-        if ($method=='post' && !isset($params['apiKey']))
+            if ($method=='post') {
+            if (empty($this->apiKey))
+                    return false;
+            if (!isset($params['apiKey']))
             $params['apiKey'] = $this->apiKey;
-            
+        }
         $curl=curl_init();
         curl_setopt($curl,CURLOPT_URL,$url);
-        curl_setopt($curl,CURLOPT_VERBOSE,0);
-        curl_setopt($curl,CURLOPT_HEADER,0);
+        if ($method=='get') {
+           curl_setopt($curl,CURLOPT_VERBOSE,0);
+               curl_setopt($curl,CURLOPT_HEADER,0);
+        }
+        if ($method=='post'){
+            curl_setopt($curl, CURLOPT_POST,1);
+            if (count($params)>0 && is_array($params)) {
+                   $datajson = json_encode($params);
+                   curl_setopt($curl, CURLOPT_POSTFIELDS, $datajson);
+                   curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            }
+        }
         curl_setopt($curl,CURLOPT_RETURNTRANSFER,1);
-        if ($method=='post')
-            curl_setopt($curl, CURLOPT_POST, true);
-        if (count($params)>0 && is_array($params)) {
-            $datajson = json_encode($params);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $datajson);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, [                                                                        
-                'Content-Type: application/json',                                                                                
-                'Content-Length: ' . strlen($datajson)                                                                     
-            ]);    
-        }    
         $curlData=curl_exec($curl);
-        echo '<h3>Curl</h3><pre>'; var_dump(curl_getinfo($curl)); echo "</pre><pre>"; var_dump(curl_error($curl)); echo '</pre>'; 
         curl_close($curl);
         return(json_decode($curlData,true));
     }
